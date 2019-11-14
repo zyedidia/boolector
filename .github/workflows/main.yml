@@ -94,11 +94,11 @@ jobs:
         #      run: brew install ccache
 
     - name: Install Cython (Linux)
-      if: matrix.cython && runner.os == 'Linux'
+      if: ${{ matrix.cython }} && runner.os == 'Linux'
       run: sudo pip install -U cython
 
     - name: Install Cython (macOS)
-      if: matrix.cython && runner.os == 'macOS'
+      if: ${{ matrix.cython }} && runner.os == 'macOS'
       run: sudo pip3 install cython
 
     - name: Setup dependencies
