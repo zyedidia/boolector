@@ -20,8 +20,8 @@ jobs:
           macos-clang,
           macos-debug,
           macos-debug-gmp,
-          macos-py2,
-          macos-py3,
+          #          macos-py2,
+          #          macos-py3,
         ]
 
         include:
