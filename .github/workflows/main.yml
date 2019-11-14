@@ -3,10 +3,7 @@ name: ci
 on: [push, pull_request]
 
 jobs:
-  linux:
-    name: ${{ matrix.name }}
-    runs-on: ${{ matrix.os }}
-
+  ci:
     strategy:
       matrix:
         name: [
@@ -102,11 +99,11 @@ jobs:
       run: brew install ccache
 
     - name: Install Cython
-      if: ${{ matrix.cython }} && ${{ matrix.os }} == 'Linux'
+      if: matrix.cython && runner.os == 'Linux'
       run: sudo pip install -U cython
 
     - name: Install Cython
-      if: ${{ matrix.cython }} && ${{ matrix.os }} == 'macOS'
+      if: matrix.cython && runner.os == 'macOS'
       run: sudo pip3 install cython
 
       #
