@@ -4,6 +4,9 @@ on: [push, pull_request]
 
 jobs:
   ci:
+    name: ${{ matrix.name }}
+    runs-on: ${{ matrix.os }}
+
     strategy:
       matrix:
         name: [
