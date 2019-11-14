@@ -1,0 +1,118 @@
+name: ci
+
+on: [push, pull_request]
+
+jobs:
+  linux:
+    name: ${{ matrix.name }}
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        name: [
+          ubuntu,
+          ubuntu-clang,
+          ubuntu-debug,
+          ubuntu-debug-gmp,
+          ubuntu-py2,
+          ubuntu-py3,
+          macos,
+          macos-clang,
+          macos-debug,
+          macos-debug-gmp,
+          macos-py2,
+          macos-py3,
+        ]
+
+        include:
+          - name: ubuntu
+            os: ubuntu-latest
+
+          - name: ubuntu-clang
+            os: ubuntu-latest
+            env: CC=clang CXX=clang++
+
+          - name: ubuntu-debug
+            os: ubuntu-latest
+            config: -g
+
+          - name: ubuntu-debug-gmp
+            os: ubuntu-latest
+            config: -g --gmp
+
+          - name: ubuntu-py2
+            os: ubuntu-latest
+            config: --python --py2
+
+          - name: ubuntu-py3
+            os: ubuntu-latest
+            config: --python --py3
+
+          - name: macos
+            os: macos-latest
+
+          - name: macos-clang
+            os: macos-latest
+            env: CC=clang CXX=clang++
+
+          - name: macos-debug
+            os: macos-latest
+            config: -g
+
+          - name: macos-debug-gmp
+            os: macos-latest
+            config: -g --gmp
+
+          - name: macos-py2
+            os: macos-latest
+            config: --python --py2
+            cython: true
+
+          - name: macos-py3
+            os: macos-latest
+            config: --python --py3
+            cython: true
+
+
+
+    steps:
+    - name: ccache
+      id: ccache
+      uses: actions/cache@v1
+      with:
+        path: ccache
+        key: ${{ runner.os }}-ccache
+
+    - name: Install ccache
+      if: runner.os == 'Linux'
+      run: sudo apt-get install ccache -y
+
+    - name: Install ccache
+      if: runner.os == 'macOS'
+      run: brew install ccache
+
+    - name: Install Cython
+      if: ${{ matrix.cython }} && ${{ matrix.os}} == 'Linux'
+      run: sudo pip install -U cython
+
+    - name: Install Cython
+      if: ${{ matrix.cython }} && ${{ matrix.os}} == 'macOS'
+      run: sudo pip3 install cython
+
+    - name: Setup dependencies
+      run: |
+        ./contrib/setup-btor2tools.sh
+        ./contrib/setup-cadical.sh
+        ./contrib/setup-lingeling.sh
+        ./contrib/setup-cms.sh
+
+    - name: Configure Boolector
+      run: ${{ matrix.env }} ./configure.sh ${{ matrix.config }}
+
+    - name: Build Boolector
+      run: make -j2
+      working-directory: build
+
+    - name: Run CTest
+      run: ctest -j2 --output-on-failure
+      working-directory: build
