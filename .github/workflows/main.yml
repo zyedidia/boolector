@@ -101,28 +101,28 @@ jobs:
       if: runner.os == 'macOS'
       run: brew install ccache
 
-    - name: Install Cython
-      if: ${{ matrix.cython }} && ${{ matrix.os }} == 'Linux'
-      run: sudo pip install -U cython
-
-    - name: Install Cython
-      if: ${{ matrix.cython }} && ${{ matrix.os}} == 'macOS'
-      run: sudo pip3 install cython
-
-    - name: Setup dependencies
-      run: |
-        ./contrib/setup-btor2tools.sh
-        ./contrib/setup-cadical.sh
-        ./contrib/setup-lingeling.sh
-        ./contrib/setup-cms.sh
-
-    - name: Configure Boolector
-      run: ${{ matrix.env }} ./configure.sh ${{ matrix.config }}
-
-    - name: Build Boolector
-      run: make -j2
-      working-directory: build
-
-    - name: Run CTest
-      run: ctest -j2 --output-on-failure
-      working-directory: build
+      #    - name: Install Cython
+      #      if: ${{ matrix.cython }} && ${{ matrix.os }} == 'Linux'
+      #      run: sudo pip install -U cython
+      #
+      #    - name: Install Cython
+      #      if: ${{ matrix.cython }} && ${{ matrix.os}} == 'macOS'
+      #      run: sudo pip3 install cython
+      #
+      #    - name: Setup dependencies
+      #      run: |
+      #        ./contrib/setup-btor2tools.sh
+      #        ./contrib/setup-cadical.sh
+      #        ./contrib/setup-lingeling.sh
+      #        ./contrib/setup-cms.sh
+      #
+      #    - name: Configure Boolector
+      #      run: ${{ matrix.env }} ./configure.sh ${{ matrix.config }}
+      #
+      #    - name: Build Boolector
+      #      run: make -j2
+      #      working-directory: build
+      #
+      #    - name: Run CTest
+      #      run: ctest -j2 --output-on-failure
+      #      working-directory: build
