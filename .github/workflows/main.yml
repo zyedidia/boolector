@@ -83,13 +83,13 @@ jobs:
         path: ccache
         key: ${{ runner.os }}-ccache
 
-    - name: Install ccache
-      if: runner.os == 'Linux'
-      run: sudo apt-get install ccache -y
-
-    - name: Install ccache
-      if: runner.os == 'macOS'
-      run: brew install ccache
+        #    - name: Install ccache
+        #      if: runner.os == 'Linux'
+        #      run: sudo apt-get install ccache -y
+        #
+        #    - name: Install ccache
+        #      if: runner.os == 'macOS'
+        #      run: brew install ccache
 
     - name: Install Cython (Linux)
       if: matrix.cython && runner.os == 'Linux'
