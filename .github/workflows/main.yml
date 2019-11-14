@@ -43,10 +43,12 @@ jobs:
           - name: ubuntu-py2
             os: ubuntu-latest
             config: --python --py2
+            cython: true
 
           - name: ubuntu-py3
             os: ubuntu-latest
             config: --python --py3
+            cython: true
 
           - name: macos
             os: macos-latest
@@ -94,11 +96,11 @@ jobs:
         #      run: brew install ccache
 
     - name: Install Cython (Linux)
-      if: ${{ matrix.cython }} && runner.os == 'Linux'
+      if: matrix.cython && runner.os == 'Linux'
       run: sudo pip install -U cython
 
     - name: Install Cython (macOS)
-      if: ${{ matrix.cython }} && runner.os == 'macOS'
+      if: matrix.cython && runner.os == 'macOS'
       run: sudo pip3 install cython
 
     - name: Setup dependencies
