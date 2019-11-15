@@ -80,12 +80,16 @@ jobs:
     steps:
     - uses: actions/checkout@v1
 
-    - name: ccache
-      id: ccache
+    - name: Restore cache
+      id: restore-ccache
       uses: actions/cache@v1
       with:
-        path: /ccache
+        path: ccache-dir
         key: ${{ runner.os }}-ccache
+
+    - name: Create ccache directory
+      if: steps.restore-ccache.outputs != 'true'
+      run: mkdir ccache-dir
 
     - name: Install ccache
       if: runner.os == 'Linux'
@@ -97,7 +101,7 @@ jobs:
 
     - name: Configure ccache
       run: |
-        ccache --set-config=cache_dir=/ccache
+        ccache --set-config=cache_dir=ccache-dir
         ccache --set-config=compression=true
         ccache --set-config=compression_level=6
         ccache -M 1G
