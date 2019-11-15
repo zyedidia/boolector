@@ -84,16 +84,28 @@ jobs:
       id: ccache
       uses: actions/cache@v1
       with:
-        path: ccache
+        path: /ccache
         key: ${{ runner.os }}-ccache
 
-        #    - name: Install ccache
-        #      if: runner.os == 'Linux'
-        #      run: sudo apt-get install ccache -y
-        #
-        #    - name: Install ccache
-        #      if: runner.os == 'macOS'
-        #      run: brew install ccache
+    - name: Install ccache
+      id: ccache-install
+      if: runner.os == 'Linux'
+      run: sudo apt-get install ccache -y
+
+    - name: Install ccache
+      if: runner.os == 'macOS'
+      run: brew install ccache
+
+    - name: Configure ccache
+      if: ccache-install
+      run: |
+        ccache --set-config=cache_dir=/ccache
+        ccache --set-config=compression=true
+        ccache --set-config=compression_level=6
+        ccache -M 1G
+        ccache -z
+        ${CC} --version
+        ${CXX} --version
 
     - name: Install Cython (Linux)
       if: matrix.cython && runner.os == 'Linux'
@@ -116,6 +128,9 @@ jobs:
     - name: Build Boolector
       run: make -j2
       working-directory: build
+
+    - name: ccache Statistics
+      run: ccache -s
 
     - name: Run CTest
       run: ctest -j2 --output-on-failure
