@@ -102,8 +102,8 @@ jobs:
         ccache --set-config=compression_level=6
         ccache -M 1G
         ccache -z
-        ${CC} --version
-        ${CXX} --version
+        #${CC} --version
+        #${CXX} --version
 
     - name: Install Cython (Linux)
       if: matrix.cython && runner.os == 'Linux'
