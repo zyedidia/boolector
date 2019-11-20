@@ -87,6 +87,13 @@ jobs:
         path: ccache-dir
         key: ${{ runner.os }}-ccache
 
+    - name: Restore cache
+      id: restore-deps
+      uses: actions/cache@v1
+      with:
+        path: deps
+        key: ${{ runner.os }}-ccache-${{ hashFiles(contrib/setup-*.sh) }}
+
     - name: Create ccache directory
       if: steps.restore-ccache.outputs != 'true'
       run: mkdir ccache-dir
@@ -118,6 +125,7 @@ jobs:
       run: sudo pip3 install cython
 
     - name: Setup dependencies
+      if: steps.restore-deps.outputs != 'true'
       run: |
         ./contrib/setup-btor2tools.sh
         ./contrib/setup-cadical.sh
