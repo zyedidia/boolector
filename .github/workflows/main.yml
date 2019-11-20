@@ -85,7 +85,8 @@ jobs:
       uses: actions/cache@v1
       with:
         path: ccache-dir
-        key: ${{ runner.os }}-ccache
+        key: ${{ runner.os }}-ccache-${{ github.ref }}
+        restore-keys: ${{ runner.os }}-ccache-master
 
     - name: Restore Dependencies
       id: restore-deps
