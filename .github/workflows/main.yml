@@ -92,7 +92,7 @@ jobs:
       uses: actions/cache@v1
       with:
         path: deps
-        key: ${{ runner.os }}-ccache-${{ hashFiles(contrib/setup-*.sh) }}
+        key: ${{ runner.os }}-ccache-${{ hashFiles('contrib/setup-**.sh') }}
 
     - name: Create ccache directory
       if: steps.restore-ccache.outputs != 'true'
