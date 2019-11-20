@@ -80,19 +80,19 @@ jobs:
     steps:
     - uses: actions/checkout@v1
 
-    - name: Restore cache
+    - name: Restore ccache
       id: restore-ccache
       uses: actions/cache@v1
       with:
         path: ccache-dir
         key: ${{ runner.os }}-ccache
 
-    - name: Restore cache
+    - name: Restore Dependencies
       id: restore-deps
       uses: actions/cache@v1
       with:
         path: deps
-        key: ${{ runner.os }}-ccache-${{ hashFiles('contrib/setup-**.sh') }}
+        key: ${{ runner.os }}-deps-${{ hashFiles('contrib/setup-**.sh') }}
 
     - name: Create ccache directory
       if: steps.restore-ccache.outputs != 'true'
