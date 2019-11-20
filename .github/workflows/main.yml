@@ -85,7 +85,7 @@ jobs:
       uses: actions/cache@v1
       with:
         path: ccache-dir
-        key: ${{ runner.os }}-ccache-${{ github.ref }}
+        key: ${{ runner.os }}-ccache-${{ github.ref }}-test1
         restore-keys: ${{ runner.os }}-ccache-master
 
     - name: Restore Dependencies
@@ -109,7 +109,7 @@ jobs:
 
     - name: Configure ccache
       run: |
-        ccache --set-config=cache_dir=ccache-dir
+        ccache --set-config=cache_dir=${{ github.workspace }}/ccache-dir
         ccache --set-config=compression=true
         ccache --set-config=compression_level=6
         ccache -M 1G
