@@ -21,7 +21,7 @@ jobs:
           macos-debug,
           macos-debug-gmp,
           #          macos-py2,
-          #          macos-py3,
+          macos-py3,
         ]
 
         include:
@@ -65,16 +65,15 @@ jobs:
             os: macos-latest
             config: -g --gmp
 
-            #          - name: macos-py2
-            #            os: macos-latest
-            #            config: --python --py2
-            #            cython: true
-            #
-            #          - name: macos-py3
-            #            os: macos-latest
-            #            config: --python --py3
-            #            cython: true
+#          - name: macos-py2
+#            os: macos-latest
+#            config: --python --py2
+#            cython: true
 
+          - name: macos-py3
+            os: macos-latest
+            config: --python --py3
+            cython: true
 
 
     steps:
