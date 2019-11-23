@@ -80,13 +80,13 @@ jobs:
     steps:
     - uses: actions/checkout@v1
 
-    - name: Restore ccache
-      id: restore-ccache
-      uses: actions/cache@v1
-      with:
-        path: ccache-dir
-        key: ${{ runner.os }}-ccache-${{ github.ref }}-test1
-        restore-keys: ${{ runner.os }}-ccache-master
+#    - name: Restore ccache
+#      id: restore-ccache
+#      uses: actions/cache@v1
+#      with:
+#        path: ccache-dir
+#        key: ${{ runner.os }}-ccache-${{ matrix.cache }}
+#        restore-keys: ${{ runner.os }}-ccache-master-${{ matrix.cache }}
 
     - name: Restore Dependencies
       id: restore-deps
@@ -95,25 +95,25 @@ jobs:
         path: deps
         key: ${{ runner.os }}-deps-${{ hashFiles('contrib/setup-**.sh') }}
 
-    - name: Create ccache directory
-      if: steps.restore-ccache.outputs.cache-hit != 'true'
-      run: mkdir ccache-dir
-
-    - name: Install ccache
-      if: runner.os == 'Linux'
-      run: sudo apt-get install ccache -y
-
-    - name: Install ccache
-      if: runner.os == 'macOS'
-      run: brew install ccache
-
-    - name: Configure ccache
-      run: |
-        ccache --set-config=cache_dir=${{ github.workspace }}/ccache-dir
-        ccache --set-config=compression=true
-        ccache --set-config=compression_level=6
-        ccache -M 1G
-        ccache -z
+#    - name: Create ccache directory
+#      if: steps.restore-ccache.outputs.cache-hit != 'true'
+#      run: mkdir ccache-dir
+#
+#    - name: Install ccache
+#      if: runner.os == 'Linux'
+#      run: sudo apt-get install ccache -y
+#
+#    - name: Install ccache
+#      if: runner.os == 'macOS'
+#      run: brew install ccache
+#
+#    - name: Configure ccache
+#      run: |
+#        ccache --set-config=cache_dir=${{ github.workspace }}/ccache-dir
+#        ccache --set-config=compression=true
+#        ccache --set-config=compression_level=6
+#        ccache -M 1G
+#        ccache -z
 
     - name: Install Cython (Linux)
       if: matrix.cython && runner.os == 'Linux'
@@ -138,8 +138,8 @@ jobs:
       run: make -j2
       working-directory: build
 
-    - name: ccache Statistics
-      run: ccache -s
+#    - name: ccache Statistics
+#      run: ccache -s
 
     - name: Run CTest
       run: ctest -j2 --output-on-failure
