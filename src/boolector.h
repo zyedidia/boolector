@@ -13,6 +13,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
+
 #include "btortypes.h"
 
 #if __cplusplus
@@ -738,6 +739,16 @@ BoolectorNode *boolector_constd (Btor *btor,
 BoolectorNode *boolector_consth (Btor *btor,
                                  BoolectorSort sort,
                                  const char *str);
+
+/*!
+  Create bit-vector constant from the uint64 ``bits``.
+
+  :param btor: Boolector instance.
+  :param bits: A uint64 holding the bits to be used to represent the resulting bit-vector.
+  :param bw: Desired bit-width of the bit-vector.
+  :return: Bit-vector constant with bit width ``bw``.
+ */
+BoolectorNode *boolector_const_uint64 (Btor *btor, uint64_t bits, uint32_t bw);
 
 /*!
   Create bit-vector constant zero of sort ``sort``.

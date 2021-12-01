@@ -1294,6 +1294,23 @@ boolector_consth (Btor *btor, BoolectorSort sort, const char *str)
   return BTOR_EXPORT_BOOLECTOR_NODE (res);
 }
 
+BoolectorNode *
+boolector_const_uint64 (Btor *btor, uint64_t bits, uint32_t bw)
+{
+  BtorNode *res;
+  BtorBitVector *bv;
+
+  bv  = btor_bv_uint64_to_bv (btor->mm, bits, bw);
+  res = btor_exp_bv_const (btor, bv);
+  btor_node_inc_ext_ref_counter (btor, res);
+  btor_bv_free (btor->mm, bv);
+  BTOR_TRAPI_RETURN_NODE (res);
+#ifndef NDEBUG
+  BTOR_CHKCLONE_RES_PTR (res, const, bits);
+#endif
+  return BTOR_EXPORT_BOOLECTOR_NODE (res);
+}
+
 /*------------------------------------------------------------------------*/
 
 bool
